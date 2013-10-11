@@ -7,6 +7,9 @@ class staticpress_s3_admin {
 	const NONCE_ACTION = 's3_update_options';
 	const NONCE_NAME   = '_wpnonce_s3_update_options';
 
+    static $debug_mode = false;
+    static $instance;
+
 	private $options = array();
 	private $plugin_basename;
 	private $admin_hook, $admin_action;
@@ -23,10 +26,12 @@ class staticpress_s3_admin {
 		);
 
 	function __construct(){
+        self::$instance = $this;
+
 		$this->options = $this->get_option();
 		$this->plugin_basename = staticpress_s3::plugin_basename();
-		add_action('StaticPress::options_save', array(&$this, 'options_save'));
-		add_action('StaticPress::options_page', array(&$this, 'options_page'));
+		add_action('StaticPress::options_save', array($this, 'options_save'));
+		add_action('StaticPress::options_page', array($this, 'options_page'));
 	}
 
 	static public function option_keys(){
@@ -92,7 +97,7 @@ class staticpress_s3_admin {
 				if (!isset($options[$key]) || is_wp_error($options[$key]))
 					$options[$key] = '';
 			}
-			if (staticpress_s3::DEBUG_MODE && function_exists('dbgx_trace_var')) {
+			if (self::$debug_mode && function_exists('dbgx_trace_var')) {
 				dbgx_trace_var($options);
 			}
 

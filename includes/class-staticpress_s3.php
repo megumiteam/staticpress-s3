@@ -1,13 +1,16 @@
 <?php
 class staticpress_s3 {
-	const DEBUG_MODE  = false;
+	static $debug_mode  = false;
+    static $instance;
 
 	private $s3;                // S3 Object
 	private $options = array(); // this plugin options
 
 	function __construct($options){
+        self::$instance = $this;
+
 		$this->options = $options;
-		add_action('StaticPress::file_put', array(&$this, 'file_put'), 10, 2);
+		add_action('StaticPress::file_put', array($this, 'file_put'), 10, 2);
 	}
 
 	static public function plugin_basename() {
@@ -49,7 +52,7 @@ class staticpress_s3 {
 		$upload_result = false;
 		if ($s3 = $this->s3($S3_bucket)) {
 			$upload_result = $s3->upload($filename, $S3_key);
-			if (self::DEBUG_MODE && function_exists('dbgx_trace_var')) {
+			if (self::$debug_mode && function_exists('dbgx_trace_var')) {
 				dbgx_trace_var($upload_result);
 			}
 		}
@@ -63,7 +66,7 @@ class staticpress_s3 {
 			if (!$s3->object_exists($S3_key))
 				return false;
 			$download_result = $s3->download($S3_key, $filename);
-			if (self::DEBUG_MODE && function_exists('dbgx_trace_var')) {
+			if (self::$debug_mode && function_exists('dbgx_trace_var')) {
 				dbgx_trace_var($download_result);
 			}
 		}
@@ -78,7 +81,7 @@ class staticpress_s3 {
 				$s3->object_exists($S3_key)
 				? $s3->delete($S3_key)
 				: true;
-			if (self::DEBUG_MODE && function_exists('dbgx_trace_var')) {
+			if (self::$debug_mode && function_exists('dbgx_trace_var')) {
 				dbgx_trace_var($delete_result);
 			}
 		}

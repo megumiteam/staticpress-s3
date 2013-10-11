@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: StaticPress S3
-Author: wokamoto 
-Plugin URI: 
+Author: wokamoto
+Plugin URI: https://github.com/megumiteam/staticpress-s3
 Description: StaticPress -> S3.
-Version: 0.1.0
+Version: 0.1.1
 Author URI: http://www.digitalcube.jp/
 Text Domain: static-press-S3
 Domain Path: /languages
