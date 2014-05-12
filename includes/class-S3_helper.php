@@ -184,9 +184,12 @@ class S3_helper {
 	// get file_type
 	private function mime_type($filename){
 		static $info;
-		if (!isset($info))
-			$info = new FInfo(FILEINFO_MIME_TYPE);
-
+		if (!isset($info)) {
+			$magic_file = '/usr/share/misc/magic';
+			$info = file_exists($magic_file)
+			? new FInfo(FILEINFO_MIME_TYPE, $magic_file)
+			: new FInfo(FILEINFO_MIME_TYPE);
+        }
 		$mime_type =
 			file_exists($filename)
 			? $info->file($filename)
