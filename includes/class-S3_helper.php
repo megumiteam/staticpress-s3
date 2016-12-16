@@ -204,6 +204,8 @@ class S3_helper {
 				$mime_type = 'text/html';
 			else if (preg_match('/\.xml$/i', $filename))
 				$mime_type = 'application/xml';
+			else if (preg_match('/\.svg$/i', $filename))
+				$mime_type = 'image/svg+xml';
 		}
 
 		return $mime_type;
